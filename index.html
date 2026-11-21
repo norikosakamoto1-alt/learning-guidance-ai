@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習ガイダンスAI</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px #0001;
+    }
+    h1 { color: #234b73; }
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 120px;
+      padding: 12px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px 24px;
+      background: #234b73;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>学習ガイダンスAI</h1>
+    <p>学習についての質問を入力してください。</p>
+
+    <textarea id="question"
+      placeholder="例：プロジェクトのリスクをどう管理すればよいですか？"></textarea>
+
+    <button onclick="askAI()">質問する</button>
+
+    <div id="response"></div>
+  </div>
+
+  <script>
+    function askAI() {
+      const question =
+        document.getElementById("question").value.trim();
+      const response =
+        document.getElementById("response");
+
+      if (!question) {
+        response.textContent = "質問を入力してください。";
+        return;
+      }
+
+      response.textContent =
+        "質問を受け付けました：「" + question +
+        "」\n\nAIとの接続は次のステップで行います。";
+      response.style.whiteSpace = "pre-line";
+    }
+  </script>
+</body>
+</html>

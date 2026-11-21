@@ -1,126 +1,138 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>学習ガイダンスAI</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="理解の曖昧さを見つけ、次の学びを提案する学習ガイダンスAI">
+  <title>学習ガイダンスAI | Adaptive Learning</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f5f7fa;
-      margin: 0;
-      padding: 40px 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px #0001;
-    }
-    h1 {
-      color: #234b73;
-    }
-    textarea {
-      width: 100%;
-      box-sizing: border-box;
-      min-height: 120px;
-      padding: 12px;
-      font-size: 16px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 12px 24px;
-      background: #234b73;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-    #response {
-      margin-top: 20px;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
+    :root {font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:#1c3040;background:#f4f7fa;font-synthesis:none}
+    * {box-sizing:border-box} body {margin:0} button,textarea,input,select {font:inherit} button {cursor:pointer} button:disabled {opacity:.55;cursor:wait}
+    .wrap {max-width:1100px;margin:0 auto;padding:26px 18px 60px}
+    header {display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+    .eyebrow {color:#49728b;font-size:12px;font-weight:700;letter-spacing:.12em}
+    h1 {font-size:clamp(24px,4vw,32px);margin:4px 0 6px;letter-spacing:-.025em} h2 {font-size:16px;margin:0 0 14px}
+    p {line-height:1.8} .muted {color:#687b89;font-size:13px;margin:0}
+    .mark {background:#e3f1f4;color:#176578;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;font-size:21px}
+    .layout {display:grid;grid-template-columns:minmax(260px,310px) minmax(0,1fr);gap:18px;align-items:start}
+    .card {background:white;border:1px solid #dde6ec;border-radius:16px;box-shadow:0 5px 20px #142e3a08;padding:20px;margin-bottom:18px}
+    label {display:block;font-weight:650;font-size:13px;margin:14px 0 7px} label:first-of-type {margin-top:0}
+    input,select,textarea {width:100%;border:1px solid #cbd8e1;border-radius:9px;padding:11px 12px;background:white;color:#183041}
+    textarea {resize:vertical;min-height:96px;line-height:1.6} input:focus,select:focus,textarea:focus {outline:3px solid #d8edf5;border-color:#3b7992}
+    .smallnote {font-size:12px;line-height:1.6;color:#71818b;margin:10px 0 0}
+    .btn {border:0;border-radius:9px;background:#215b76;color:white;padding:11px 15px;font-weight:650}
+    .btn.secondary {background:#eaf1f5;color:#24526a}.btn.ghost {background:white;color:#35576a;border:1px solid #cbd9e2}
+    .btnrow {display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chat {min-height:340px;max-height:560px;overflow-y:auto;padding:4px 2px 12px}
+    .bubble {padding:13px 15px;border-radius:13px;margin:0 0 14px;max-width:92%;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+    .assistant {background:#eff5f7;border:1px solid #e0edf0;border-top-left-radius:3px;margin-right:auto}
+    .user {background:#245e7b;color:white;border-top-right-radius:3px;margin-left:auto}
+    .speaker {display:block;font-size:11px;font-weight:700;opacity:.75;margin-bottom:4px}
+    .feedback {background:#fcfdfd;border:1px solid #dce7ed;border-radius:12px;padding:15px;margin:14px 0}
+    .feedback h3 {font-size:14px;margin:0 0 9px} .feedback p {font-size:13px;margin:0 0 10px;white-space:pre-wrap}
+    .feedback ul {margin:4px 0 0;padding-left:21px;font-size:13px;line-height:1.8}
+    .separator {border:none;border-top:1px solid #e9eef2;margin:15px 0}
+    .status {font-size:12px;color:#657b87;margin-top:10px;min-height:18px}
+    .footer {margin-top:22px;color:#70808b;font-size:12px;line-height:1.7}
+    .tag {display:inline-block;padding:4px 9px;border-radius:30px;background:#f0f5f7;color:#41677a;font-size:12px}
+    @media(max-width:800px){.layout{grid-template-columns:1fr}.chat{max-height:none;min-height:220px}.wrap{padding:18px 12px 48px}.card{padding:16px}}
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>学習ガイダンスAI</h1>
+<div class="wrap">
+  <header><div><div class="eyebrow">ADAPTIVE LEARNING · PROTOTYPE V1</div><h1>学習ガイダンスAI</h1><p class="muted">理解を確かめ、曖昧さを見つけ、次の学びにつなげる。</p></div><div class="mark" aria-hidden="true">✦</div></header>
+  <main class="layout">
+    <aside>
+      <section class="card" aria-labelledby="setup-title"><h2 id="setup-title">学習の設定</h2>
+        <label for="topic">学習テーマ</label><input id="topic" maxlength="100" value="プロジェクトのリスクマネジメント" placeholder="例：統計学の基礎">
+        <label for="goal">学習目標</label><textarea id="goal" maxlength="250" rows="3">リスクの意味を理解し、具体的な状況で対応を判断できるようになる</textarea>
+        <label for="level">現在の理解</label><select id="level"><option value="unknown">まだよくわからない</option><option value="basic">基礎知識がある</option><option value="experienced">実務・学習経験がある</option></select>
+        <label for="preference">学び方の希望</label><select id="preference"><option value="adaptive">AIに任せる（適応型）</option><option value="question">問いかけを多めに</option><option value="explanation">説明を多めに</option></select>
+        <div class="btnrow"><button class="btn secondary" id="startBtn">この目標で学習開始</button><button class="btn ghost" id="resetBtn">対話をリセット</button></div>
+        <p class="smallnote">設定を変えた場合は「この目標で学習開始」を押してください。以前の対話はリセットされます。</p>
+      </section>
+      <section class="card"><h2>学習の進め方</h2><p class="muted">① 目標を確認 → ② 考えを引き出す → ③ 曖昧な点を整理 → ④ 次に学ぶ内容を提案 → ⑤ 理解を再確認</p><hr class="separator"><span class="tag">無料枠を想定した試作</span><p class="smallnote">会話はこのページを開いている間だけ保持します。閉じたり再読み込みすると消えます。個人情報・機密情報は入力しないでください。</p></section>
+    </aside>
+    <section class="card" aria-label="学習対話">
+      <h2>学習対話</h2><div class="chat" id="chat" aria-live="polite" aria-relevant="additions text"></div>
+      <div id="feedback" class="feedback" hidden></div>
+      <label for="message">あなたの考え・質問</label>
+      <textarea id="message" maxlength="1000" placeholder="考えたことを入力してください。『わからない』でも大丈夫です。"></textarea>
+      <div class="btnrow"><button class="btn" id="sendBtn">送信する</button><button class="btn secondary" data-action="hint">ヒントがほしい</button><button class="btn secondary" data-action="explain">説明してほしい</button><button class="btn secondary" data-action="next">次の問いへ</button><button class="btn ghost" data-action="review">振り返る</button></div>
+      <div id="status" class="status" role="status"></div>
+    </section>
+  </main>
+  <div class="footer">このアプリは学習支援の試作品です。理解度の判定はAIの暫定的な推定であり、成績や能力の確定評価ではありません。公開URLを共有する前にアクセス制限・利用量制御をご検討ください。</div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const chat = $('chat'), feedback = $('feedback'), status = $('status');
+  let history = [], inFlight = false, session = 0, learning = null;
+  const actionLabels = {hint:'ヒントがほしい',explain:'説明してほしい',next:'次の問いへ',review:'振り返る'};
 
-    <p>学習についての質問を入力してください。</p>
-
-    <textarea
-      id="question"
-      maxlength="1000"
-      placeholder="例：プロジェクトのリスクをどう管理すればよいですか？"
-    ></textarea>
-
-    <button id="askButton" onclick="askAI()">
-      質問する
-    </button>
-
-    <div id="response" role="status" aria-live="polite"></div>
-  </div>
-
-  <script>
-    async function askAI() {
-      const question = document
-        .getElementById("question").value.trim();
-
-      const response = document
-        .getElementById("response");
-
-      const button = document
-        .getElementById("askButton");
-
-      if (!question) {
-        response.textContent =
-          "質問を入力してください。";
-        return;
-      }
-
-      response.textContent =
-        "AIが回答を考えています...";
-
-      button.disabled = true;
-
-      try {
-        const result = await fetch("/api/ask", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ question })
-        });
-
-        const data = await result.json();
-
-        if (!result.ok) {
-          throw new Error(
-            data.error || "通信に失敗しました。"
-          );
-        }
-
-        response.textContent =
-          data.answer || "回答を取得できませんでした。";
-
-      } catch (error) {
-        response.textContent =
-          "エラーが発生しました：" + error.message;
-
-      } finally {
-        button.disabled = false;
-      }
+  function addBubble(role, text) {
+    const bubble = document.createElement('div'); bubble.className = `bubble ${role}`;
+    const speaker = document.createElement('span'); speaker.className = 'speaker'; speaker.textContent = role === 'user' ? 'あなた' : '学習ガイダンスAI';
+    const content = document.createElement('span'); content.textContent = text;
+    bubble.append(speaker, content); chat.appendChild(bubble); chat.scrollTop = chat.scrollHeight;
+  }
+  function showFeedback(d) {
+    feedback.replaceChildren();
+    const items = [
+      ['理解できている点',d.understood],
+      ['曖昧・未確認な点',d.unclear],
+      ['次に学ぶ内容',d.nextTopics],
+    ];
+    let hasContent = false;
+    for (const [label, val] of items) {
+      if (!val || (Array.isArray(val) && !val.length)) continue;
+      hasContent = true;
+      const heading = document.createElement('h3'); heading.textContent = label; feedback.appendChild(heading);
+      if (Array.isArray(val)) { const ul = document.createElement('ul'); for (const item of val.slice(0,3)) { const li = document.createElement('li'); li.textContent = String(item); ul.appendChild(li); } feedback.appendChild(ul); }
+      else { const p = document.createElement('p'); p.textContent = String(val); feedback.appendChild(p); }
     }
-  </script>
+    feedback.hidden = !hasContent;
+  }
+  function setBusy(busy) { inFlight = busy; document.querySelectorAll('button').forEach(button => button.disabled = busy); }
+  function initialize() {
+    if (inFlight) return;
+    learning = {topic:$('topic').value.trim().slice(0,100),goal:$('goal').value.trim().slice(0,250),level:$('level').value,preference:$('preference').value};
+    if (!learning.topic || !learning.goal) { status.textContent = '学習テーマと学習目標を入力してください。'; return; }
+    session++; history = []; chat.replaceChildren(); feedback.hidden = true; feedback.replaceChildren(); $('message').value = '';
+    addBubble('assistant',`「${learning.topic}」を学んでいきましょう。\n目標：${learning.goal}\n\nまず、このテーマについて今わかっていることや、気になることを教えてください。`);
+    status.textContent = '学習を開始しました。回答を入力するか、ヒント・説明を選んでください。';
+  }
+  async function send(action='message') {
+    if (inFlight) return;
+    if (!learning) initialize(); if (!learning) return;
+    const message = action === 'message' ? $('message').value.trim() : actionLabels[action];
+    if (!message) { status.textContent = '質問・考えを入力してください。'; return; }
+    if (message.length > 1000) { status.textContent = '1000文字以内で入力してください。'; return; }
+    const version = session;
+    addBubble('user',message); $('message').value = ''; status.textContent = 'AIが考えています…'; setBusy(true);
+    try {
+      const response = await fetch('/api/ask', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,action,learning,history:history.slice(-8)})});
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || `通信エラー（${response.status}）`);
+      if (version !== session) return;
+      const reply = String(data.reply || '回答を取得できませんでした。'); addBubble('assistant',reply);
+      if (data.diagnostic && typeof data.diagnostic === 'object') showFeedback(data.diagnostic);
+      else {feedback.hidden = true;feedback.replaceChildren();}
+      history.push({role:'user',content:message},{role:'assistant',content:reply});
+      history = history.slice(-8); status.textContent = '対話を継続できます。';
+    } catch (error) { if (version === session) {addBubble('assistant',`通信を完了できませんでした。${error.message}\n同じ内容をもう一度送信できます。`);status.textContent='通信に失敗しました。無料枠やCloudflare側の状態を確認してください。';} }
+    finally {setBusy(false);}
+  }
+  $('startBtn').addEventListener('click',initialize);
+  $('resetBtn').addEventListener('click',()=>{if(inFlight)return;learning=null;history=[];session++;chat.replaceChildren();feedback.hidden=true;feedback.replaceChildren();$('message').value='';status.textContent='対話をリセットしました。';initialize();});
+  $('sendBtn').addEventListener('click',()=>send());
+  document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>send(btn.dataset.action)));
+  $('message').addEventListener('keydown',event=>{if(event.key==='Enter'&&(event.metaKey||event.ctrlKey)){event.preventDefault();send();}});
+  initialize();
+})();
+</script>
 </body>
 </html>

@@ -20,7 +20,9 @@
       border-radius: 12px;
       box-shadow: 0 4px 16px #0001;
     }
-    h1 { color: #234b73; }
+    h1 {
+      color: #234b73;
+    }
     textarea {
       width: 100%;
       box-sizing: border-box;
@@ -37,41 +39,87 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
     #response {
       margin-top: 20px;
       line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>学習ガイダンスAI</h1>
+
     <p>学習についての質問を入力してください。</p>
 
-    <textarea id="question"
-      placeholder="例：プロジェクトのリスクをどう管理すればよいですか？"></textarea>
+    <textarea
+      id="question"
+      maxlength="1000"
+      placeholder="例：プロジェクトのリスクをどう管理すればよいですか？"
+    ></textarea>
 
-    <button onclick="askAI()">質問する</button>
+    <button id="askButton" onclick="askAI()">
+      質問する
+    </button>
 
-    <div id="response"></div>
+    <div id="response" role="status" aria-live="polite"></div>
   </div>
 
   <script>
-    function askAI() {
-      const question =
-        document.getElementById("question").value.trim();
-      const response =
-        document.getElementById("response");
+    async function askAI() {
+      const question = document
+        .getElementById("question").value.trim();
+
+      const response = document
+        .getElementById("response");
+
+      const button = document
+        .getElementById("askButton");
 
       if (!question) {
-        response.textContent = "質問を入力してください。";
+        response.textContent =
+          "質問を入力してください。";
         return;
       }
 
       response.textContent =
-        "質問を受け付けました：「" + question +
-        "」\n\nAIとの接続は次のステップで行います。";
-      response.style.whiteSpace = "pre-line";
+        "AIが回答を考えています...";
+
+      button.disabled = true;
+
+      try {
+        const result = await fetch("/api/ask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await result.json();
+
+        if (!result.ok) {
+          throw new Error(
+            data.error || "通信に失敗しました。"
+          );
+        }
+
+        response.textContent =
+          data.answer || "回答を取得できませんでした。";
+
+      } catch (error) {
+        response.textContent =
+          "エラーが発生しました：" + error.message;
+
+      } finally {
+        button.disabled = false;
+      }
     }
   </script>
 </body>
